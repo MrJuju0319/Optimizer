@@ -83,7 +83,6 @@
     if (!Array.isArray(zones)) return;
     $('#tableZones tbody').empty();
     zones.forEach(function (z) { $('#tableZones tbody').append(buildZoneRow(z)); });
-    if (zones.length === 0) $('#tableZones tbody').append(buildZoneRow());
   }
 
 
@@ -179,10 +178,10 @@
           if (zonesBackupOnError) {
             loadZonesData(JSON.parse(zonesBackupOnError));
           } else {
-            $('#tableZones tbody').empty().append(buildZoneRow({use_temp_indoor:true}));
+            $('#tableZones tbody').empty();
           }
         } catch (e0) {
-          $('#tableZones tbody').empty().append(buildZoneRow({use_temp_indoor:true}));
+          $('#tableZones tbody').empty();
         }
         return;
       }
@@ -190,17 +189,17 @@
       if (data.global_mode) $('[data-l1key="global_mode"]').val(data.global_mode);
       if (data.target_comfort) $('[data-l1key="target_comfort"]').val(data.target_comfort);
       if (data.zones_config) {
-        try { loadZonesData(JSON.parse(data.zones_config)); } catch (e) { $('#tableZones tbody').append(buildZoneRow()); }
+        try { loadZonesData(JSON.parse(data.zones_config)); } catch (e) { $('#tableZones tbody').empty(); }
       } else {
         try {
           var zonesBackup = localStorage.getItem('optimizer.zones_config.backup');
           if (zonesBackup) {
             loadZonesData(JSON.parse(zonesBackup));
           } else {
-            $('#tableZones tbody').empty().append(buildZoneRow({use_temp_indoor:true}));
+            $('#tableZones tbody').empty();
           }
         } catch (e2) {
-          $('#tableZones tbody').empty().append(buildZoneRow({use_temp_indoor:true}));
+          $('#tableZones tbody').empty();
         }
       }
     },
@@ -210,10 +209,10 @@
         if (zonesBackupOnAjaxError) {
           loadZonesData(JSON.parse(zonesBackupOnAjaxError));
         } else {
-          $('#tableZones tbody').empty().append(buildZoneRow({use_temp_indoor:true}));
+          $('#tableZones tbody').empty();
         }
       } catch (e3) {
-        $('#tableZones tbody').empty().append(buildZoneRow({use_temp_indoor:true}));
+        $('#tableZones tbody').empty();
       }
     }
   });
