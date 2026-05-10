@@ -302,6 +302,9 @@
   $('body').off('click', '.bt_readValue').on('click', '.bt_readValue', function () {
     refreshOneValue($(this).closest('.input-group').find('.cmdSelector').first());
   });
+  $('body').off('change', '#tableZones .cmdSelector.zoneField').on('change', '#tableZones .cmdSelector.zoneField', function () {
+    refreshOneValue($(this));
+  });
   $('body').off('click', '.bt_addParamLine').on('click', '.bt_addParamLine', function () {
     addSimilarParamLine($(this).closest('tr'));
   });
@@ -401,6 +404,7 @@
         try { pilotageConfig = JSON.parse(data.pilotage_config); } catch (e4) { pilotageConfig = []; }
       }
       syncGlobalPilotageRows(pilotageConfig);
+      refreshAllZoneValues();
     },
     error: function () {
       try {
@@ -415,4 +419,8 @@
       }
     }
   });
+
+  setInterval(function () {
+    refreshAllZoneValues();
+  }, 5000);
 })();
