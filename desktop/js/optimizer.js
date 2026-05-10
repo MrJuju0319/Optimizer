@@ -173,7 +173,8 @@
     var heatingHtml = '';
     for (var h = 1; h <= Math.max(1, counts.heating); h++) {
       var hs = counts.heating > 1 ? ' #' + h : '';
-      heatingHtml += cmdBlock('Mode chauffage' + hs, 'heating_mode_cmd_' + h, p['heating_mode_cmd_' + h]);
+      heatingHtml += cmdBlock('Mode chaud' + hs, 'heating_mode_hot_cmd_' + h, p['heating_mode_hot_cmd_' + h]);
+      heatingHtml += cmdBlock('Mode froid' + hs, 'heating_mode_cold_cmd_' + h, p['heating_mode_cold_cmd_' + h]);
       heatingHtml += cmdBlock('Chauffage ON' + hs, 'heating_on_cmd_' + h, p['heating_on_cmd_' + h]);
       heatingHtml += cmdBlock('Chauffage OFF' + hs, 'heating_off_cmd_' + h, p['heating_off_cmd_' + h]);
       heatingHtml += cmdBlock('Consigne chaud' + hs, 'setpoint_hot_cmd_' + h, p['setpoint_hot_cmd_' + h]);
