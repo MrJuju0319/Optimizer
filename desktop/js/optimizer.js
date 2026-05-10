@@ -26,19 +26,33 @@
   function buildZoneRow(zone) {
     var z = zone || {};
     var zoneId = 'z_' + (Date.now().toString(36) + Math.random().toString(36).slice(2, 6));
-    var params = [
-      paramLine('Température intérieure', 'use_temp_indoor', 'temp_indoor_cmd', '°C', z),
-      paramLine('Hygrométrie intérieure', 'use_hygro_indoor', 'hygro_indoor_cmd', '%', z),
-      paramLine('Luminosité intérieure', 'use_lux_indoor', 'lux_indoor_cmd', 'lux', z),
-      paramLine('Présence / occupation', 'use_presence', 'presence_cmd', 'occupé=1', z),
-      paramLine('Mouvement', 'use_motion', 'motion_cmd', 'mouvement=1', z),
-      paramLine('État fenêtre', 'use_window', 'window_cmd', 'ouverte=1', z),
-      paramLine('État porte', 'use_door', 'door_cmd', 'ouverte=1', z),
-      paramLine('État chauffage', 'use_heating_state', 'heating_state_cmd', 'Off / Chaud / Froid', z),
-      paramLine('État volet', 'use_shutter_state', 'shutter_state_cmd', 'position %', z),
-      paramLine('État lumière', 'use_light_state', 'light_state_cmd', 'intensité %', z),
-      paramLine('Qualité air CO2', 'use_co2', 'co2_cmd', 'ppm', z)
+    var defs = [
+      {label:'Température intérieure', useKey:'use_temp_indoor', cmdKey:'temp_indoor_cmd', unit:'°C'},
+      {label:'Hygrométrie intérieure', useKey:'use_hygro_indoor', cmdKey:'hygro_indoor_cmd', unit:'%'},
+      {label:'Luminosité intérieure', useKey:'use_lux_indoor', cmdKey:'lux_indoor_cmd', unit:'lux'},
+      {label:'Présence / occupation', useKey:'use_presence', cmdKey:'presence_cmd', unit:'occupé=1'},
+      {label:'Mouvement', useKey:'use_motion', cmdKey:'motion_cmd', unit:'mouvement=1'},
+      {label:'État fenêtre', useKey:'use_window', cmdKey:'window_cmd', unit:'ouverte=1'},
+      {label:'État porte', useKey:'use_door', cmdKey:'door_cmd', unit:'ouverte=1'},
+      {label:'État chauffage', useKey:'use_heating_state', cmdKey:'heating_state_cmd', unit:'Off / Chaud / Froid'},
+      {label:'État volet', useKey:'use_shutter_state', cmdKey:'shutter_state_cmd', unit:'position %'},
+      {label:'État lumière', useKey:'use_light_state', cmdKey:'light_state_cmd', unit:'intensité %'},
+      {label:'Qualité air CO2', useKey:'use_co2', cmdKey:'co2_cmd', unit:'ppm'}
     ];
+    var defByUseKey = {};
+    defs.forEach(function (d) { defByUseKey[d.useKey] = d; });
+    var params = defs.map(function (d) { return paramLine(d.label, d.useKey, d.cmdKey, d.unit, z); });
+    Object.keys(z).forEach(function (key) {
+      var m = key.match(/^(use_[^_]+(?:_[^_]+)*)__extra_.+$/);
+      if (!m) return;
+      var baseUseKey = m[1];
+      var suffix = key.substring(baseUseKey.length + 2);
+      var d = defByUseKey[baseUseKey];
+      if (!d) return;
+      var extraUseKey = baseUseKey + '__' + suffix;
+      var extraCmdKey = d.cmdKey + '__' + suffix;
+      params.push(paramLine(d.label, extraUseKey, extraCmdKey, d.unit, z));
+    });
     var html = '';
     params.forEach(function (p, i) {
       html += '<tr data-zone-id="' + zoneId + '"' + (i === 0 ? ' class="zone-start"' : '') + '>';
