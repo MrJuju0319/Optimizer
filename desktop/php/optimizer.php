@@ -15,7 +15,6 @@ $nextActions = config::byKey('next_actions', 'optimizer', '[]');
     <legend><i class="fas fa-brain"></i> {{Optimizer}}</legend>
     <div class="pull-right" style="margin-top:-38px;">
       <a class="btn btn-default" id="bt_backPage"><i class="fas fa-arrow-left"></i> {{Retour}}</a>
-      <a class="btn btn-success" id="bt_saveAll"><i class="fas fa-save"></i> {{Sauvegarder}}</a>
     </div>
 
     <ul class="nav nav-tabs" role="tablist">
@@ -36,7 +35,6 @@ $nextActions = config::byKey('next_actions', 'optimizer', '[]');
           <div class="col-md-3"><div class="alert alert-warning"><b>{{Confort cible}}</b><br><span id="opt_comfort"><?php echo $targetComfort; ?>°C</span></div></div>
           <div class="col-md-3"><div class="alert alert-primary"><b>{{Prochaines actions}}</b><br><span id="opt_next_actions"><?php echo htmlspecialchars($nextActions); ?></span></div></div>
         </div>
-        <div class="text-right" style="margin-top:10px;"><a class="btn btn-success bt_saveTab"><i class="fas fa-save"></i> {{Sauvegarder cet onglet}}</a></div>
       </div>
 
       <div role="tabpanel" class="tab-pane" id="opt_global">
@@ -57,10 +55,10 @@ $nextActions = config::byKey('next_actions', 'optimizer', '[]');
             <div class="col-sm-2"><input type="number" class="form-control configKey" data-l1key="target_comfort" min="15" max="28" step="0.5"></div>
           </div>
           <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-3"><a class="btn btn-success" id="bt_saveGlobal"><i class="fas fa-save"></i> {{Sauvegarder}}</a></div>
+            
           </div>
         </form>
-        <div class="text-right"><a class="btn btn-success bt_saveTab"><i class="fas fa-save"></i> {{Sauvegarder cet onglet}}</a></div>
+        
       </div>
 
       <div role="tabpanel" class="tab-pane" id="opt_zone">
@@ -71,13 +69,12 @@ $nextActions = config::byKey('next_actions', 'optimizer', '[]');
           <thead><tr><th>{{Zone}}</th><th>{{Données prises en compte}}</th><th>{{Actions}}</th></tr></thead>
           <tbody></tbody>
         </table>
-        <div class="text-right" style="margin-top:10px;"><a class="btn btn-success bt_saveTab"><i class="fas fa-save"></i> {{Sauvegarder cet onglet}}</a></div>
       </div>
 
-      <div role="tabpanel" class="tab-pane" id="opt_rules"><div class="alert alert-info">{{Onglet règles de régulation (priorités, hystérésis, contraintes énergétiques).}}</div><div class="text-right"><a class="btn btn-success bt_saveTab"><i class="fas fa-save"></i> {{Sauvegarder cet onglet}}</a></div></div>
-      <div role="tabpanel" class="tab-pane" id="opt_learning"><div class="alert alert-info">{{Onglet apprentissage (profil d’occupation, inertie thermique, habitudes).}}</div><div class="text-right"><a class="btn btn-success bt_saveTab"><i class="fas fa-save"></i> {{Sauvegarder cet onglet}}</a></div></div>
-      <div role="tabpanel" class="tab-pane" id="opt_history"><div class="alert alert-info">{{Onglet historique/décisions (journal des arbitrages et actions envoyées).}}</div><div class="text-right"><a class="btn btn-success bt_saveTab"><i class="fas fa-save"></i> {{Sauvegarder cet onglet}}</a></div></div>
-      <div role="tabpanel" class="tab-pane" id="opt_diagnostic"><div class="alert alert-info">{{Onglet diagnostic (cohérence capteurs, commandes manquantes, latence).}}</div><div class="text-right"><a class="btn btn-success bt_saveTab"><i class="fas fa-save"></i> {{Sauvegarder cet onglet}}</a></div></div>
+      <div role="tabpanel" class="tab-pane" id="opt_rules"><div class="alert alert-info">{{Onglet règles de régulation (priorités, hystérésis, contraintes énergétiques).}}</div></div>
+      <div role="tabpanel" class="tab-pane" id="opt_learning"><div class="alert alert-info">{{Onglet apprentissage (profil d’occupation, inertie thermique, habitudes).}}</div></div>
+      <div role="tabpanel" class="tab-pane" id="opt_history"><div class="alert alert-info">{{Onglet historique/décisions (journal des arbitrages et actions envoyées).}}</div></div>
+      <div role="tabpanel" class="tab-pane" id="opt_diagnostic"><div class="alert alert-info">{{Onglet diagnostic (cohérence capteurs, commandes manquantes, latence).}}</div></div>
     </div>
   </div>
 </div>
