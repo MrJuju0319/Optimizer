@@ -145,11 +145,47 @@
     return extra;
   }
 
+  function buildPilotageRow(zoneName, pilotage) {
+    var p = pilotage || {};
+    return '<tr>' +
+      '<td><input class="form-control pilotField" data-field="zone_name" value="' + (zoneName || '') + '" readonly></td>' +
+      '<td><div class="input-group"><input class="form-control cmdSelector pilotField" data-field="heating_cmd" data-subtype="action" value="' + (p.heating_cmd || '') + '"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd" title="Choisir une commande"><i class="fas fa-list"></i></a></span></div></td>' +
+      '<td><div class="input-group"><input class="form-control cmdSelector pilotField" data-field="shutter_cmd" data-subtype="action" value="' + (p.shutter_cmd || '') + '"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd" title="Choisir une commande"><i class="fas fa-list"></i></a></span></div></td>' +
+      '<td><div class="input-group"><input class="form-control cmdSelector pilotField" data-field="light_cmd" data-subtype="action" value="' + (p.light_cmd || '') + '"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd" title="Choisir une commande"><i class="fas fa-list"></i></a></span></div></td>' +
+      '</tr>';
+  }
+
+  function getPilotageData() {
+    var rows = [];
+    $('#tableGlobalPilotage tbody tr').each(function () {
+      var row = {};
+      $(this).find('.pilotField').each(function () {
+        row[$(this).data('field')] = $(this).val();
+      });
+      if ((row.zone_name || '').trim() !== '') rows.push(row);
+    });
+    return rows;
+  }
+
+  function syncGlobalPilotageRows(pilotageConfig) {
+    var byZone = {};
+    (pilotageConfig || []).forEach(function (p) { byZone[p.zone_name] = p; });
+    var zoneNames = [];
+    $('#tableZones tbody tr.zone-start').each(function () {
+      zoneNames.push(($(this).find('input[data-field=\"name\"]').val() || '').trim() || 'Nouvelle zone');
+    });
+    $('#tableGlobalPilotage tbody').empty();
+    zoneNames.forEach(function (zoneName) {
+      $('#tableGlobalPilotage tbody').append(buildPilotageRow(zoneName, byZone[zoneName]));
+    });
+  }
+
   function saveAllConfiguration() {
     var payload = {};
     $('.configKey').each(function () { payload[$(this).attr('data-l1key')] = $(this).val(); });
     payload.zones_config = JSON.stringify(getZonesData());
     payload.user_parameters = JSON.stringify(getExtraUserParameters());
+    payload.pilotage_config = JSON.stringify(getPilotageData());
     try {
       localStorage.setItem('optimizer.zones_config.backup', payload.zones_config);
       localStorage.setItem('optimizer.user_parameters.backup', payload.user_parameters);
@@ -177,7 +213,8 @@
   function saveZonesConfiguration() {
     var payload = {
       zones_config: JSON.stringify(getZonesData()),
-      user_parameters: JSON.stringify(getExtraUserParameters())
+      user_parameters: JSON.stringify(getExtraUserParameters()),
+      pilotage_config: JSON.stringify(getPilotageData())
     };
     try {
       localStorage.setItem('optimizer.zones_config.backup', payload.zones_config);
@@ -221,7 +258,10 @@
       if (current > 1) $(this).attr('rowspan', current - 1);
     });
   });
-  $('#bt_addZone').off('click').on('click', function () { $('#tableZones tbody').append(buildZoneRow()); });
+  $('#bt_addZone').off('click').on('click', function () {
+    $('#tableZones tbody').append(buildZoneRow());
+    syncGlobalPilotageRows(getPilotageData());
+  });
   $('#bt_saveZoneConfig').off('click').on('click', function (e) {
     e.preventDefault();
     e.stopPropagation();
@@ -232,13 +272,18 @@
   $('body').off('click', '.bt_removeZone').on('click', '.bt_removeZone', function () {
     var zoneId = $(this).closest('tr').attr('data-zone-id');
     $('#tableZones tbody tr[data-zone-id="' + zoneId + '"]').remove();
+    syncGlobalPilotageRows(getPilotageData());
+  });
+
+  $('body').off('change', '#tableZones input[data-field=\"name\"]').on('change', '#tableZones input[data-field=\"name\"]', function () {
+    syncGlobalPilotageRows(getPilotageData());
   });
 
   $.ajax({
     type: 'POST',
     url: 'plugins/optimizer/core/ajax/optimizer.ajax.php',
     dataType: 'json',
-    data: {action: 'loadConfig', keys: JSON.stringify(['global_mode', 'target_comfort', 'zones_config', 'user_parameters'])},
+    data: {action: 'loadConfig', keys: JSON.stringify(['global_mode', 'target_comfort', 'zones_config', 'user_parameters', 'pilotage_config'])},
     success: function (res) {
       if (!res || res.state !== 'ok') {
         try {
@@ -293,6 +338,11 @@
           $('#tableZones tbody').empty();
         }
       }
+      var pilotageConfig = [];
+      if (data.pilotage_config) {
+        try { pilotageConfig = JSON.parse(data.pilotage_config); } catch (e4) { pilotageConfig = []; }
+      }
+      syncGlobalPilotageRows(pilotageConfig);
     },
     error: function () {
       try {

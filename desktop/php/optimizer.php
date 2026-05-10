@@ -55,7 +55,18 @@ $nextActions = config::byKey('next_actions', 'optimizer', '[]');
             
           </div>
         </form>
-        
+        <hr>
+        <h4>{{Commandes de pilotage par zone}}</h4>
+        <table class="table table-condensed" id="tableGlobalPilotage" style="table-layout:fixed;">
+          <colgroup>
+            <col style="width:22%;">
+            <col style="width:26%;">
+            <col style="width:26%;">
+            <col style="width:26%;">
+          </colgroup>
+          <thead><tr><th>{{Zone}}</th><th>{{Commande chauffage / clim}}</th><th>{{Commande volet}}</th><th>{{Commande lumière}}</th></tr></thead>
+          <tbody></tbody>
+        </table>
       </div>
 
       <div role="tabpanel" class="tab-pane" id="opt_zone">
