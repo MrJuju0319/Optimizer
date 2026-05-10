@@ -17,7 +17,8 @@
     var val = z[cmdKey] || '';
     return '<div class="form-inline" style="margin-bottom:4px;">' +
       '<label><input type="checkbox" class="zoneField" data-field="' + useKey + '" ' + checked + '> ' + label + '</label>' +
-      '<input class="form-control cmdSelector zoneField" data-field="' + cmdKey + '" data-subtype="info" style="width:55%;margin-left:8px;" value="' + val + '">' +
+      '<input class=\"form-control cmdSelector zoneField\" data-field=\"' + cmdKey + '\" data-subtype=\"info\" style=\"width:45%;margin-left:8px;\" value=\"' + val + '\">' +
+      '<span class="label label-default zoneLiveValue" style="margin-left:6px;">-</span>' +
       '</div>';
   }
 
@@ -66,6 +67,42 @@
     if (zones.length === 0) $('#tableZones tbody').append(buildZoneRow());
   }
 
+
+
+  function refreshJeedomValues() {
+    $('.cmdSelector').each(function () {
+      var $input = $(this);
+      var human = ($input.val() || '').trim();
+      var $badge = $input.closest('.form-inline').find('.zoneLiveValue');
+      if (!human) {
+        $badge.text('-');
+        return;
+      }
+      if (!jeedom.cmd || !jeedom.cmd.byHumanName) {
+        $badge.text('N/A');
+        return;
+      }
+      jeedom.cmd.byHumanName({
+        humanName: human,
+        error: function () { $badge.text('Erreur'); },
+        success: function (cmd) {
+          if (!cmd || !cmd.id) {
+            $badge.text('?');
+            return;
+          }
+          jeedom.cmd.execute({
+            id: cmd.id,
+            cache: 0,
+            error: function () { $badge.text('Err'); },
+            success: function (value) {
+              $badge.text(value === '' || value === null ? 'Vide' : value);
+            }
+          });
+        }
+      });
+    });
+  }
+
   function saveAllConfiguration() {
     var payload = {};
     $('.configKey').each(function () { payload[$(this).attr('data-l1key')] = $(this).val(); });
@@ -85,6 +122,7 @@
 
   $('body').off('click', '.bt_selectCmd').on('click', '.bt_selectCmd', function () { selectCmd($(this).closest('.form-inline, .input-group').find('.cmdSelector').first()); });
   $('#bt_addZone').off('click').on('click', function () { $('#tableZones tbody').append(buildZoneRow()); });
+  $('#bt_refreshJeedomValues').off('click').on('click', function () { refreshJeedomValues(); });
   $('#bt_backPage').off('click').on('click', function () { window.history.back(); });
   $('#bt_saveAll, #bt_saveGlobal').off('click').on('click', function () { saveAllConfiguration(); });
   $('body').off('click', '.bt_removeZone').on('click', '.bt_removeZone', function () { $(this).closest('tr').remove(); });

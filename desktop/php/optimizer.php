@@ -64,6 +64,7 @@ $nextActions = config::byKey('next_actions', 'optimizer', '[]');
       <div role="tabpanel" class="tab-pane" id="opt_zone">
         <div class="text-right" style="margin-bottom:8px;">
           <a class="btn btn-primary" id="bt_addZone"><i class="fas fa-plus-circle"></i> {{Ajouter une zone}}</a>
+          <a class="btn btn-info" id="bt_refreshJeedomValues"><i class="fas fa-sync"></i> {{Récupérer les valeurs Jeedom}}</a>
         </div>
         <table class="table table-condensed" id="tableZones">
           <thead><tr><th>{{Zone}}</th><th>{{Données prises en compte}}</th><th>{{Actions}}</th></tr></thead>
