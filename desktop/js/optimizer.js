@@ -15,10 +15,16 @@
   function paramLine(label, useKey, cmdKey, z) {
     var checked = z[useKey] ? 'checked' : '';
     var val = z[cmdKey] || '';
-    return '<div class="form-inline" style="margin-bottom:4px;">' +
-      '<label><input type="checkbox" class="zoneField" data-field="' + useKey + '" ' + checked + '> ' + label + '</label>' +
-      '<input class=\"form-control cmdSelector zoneField\" data-field=\"' + cmdKey + '\" data-subtype=\"info\" style=\"width:45%;margin-left:8px;\" value=\"' + val + '\">' +
-      '<span class="label label-default zoneLiveValue" style="margin-left:6px;">-</span>' +
+    return '<div class="form-inline" style="margin-bottom:4px;display:flex;align-items:center;gap:8px;">' +
+      '<label style="min-width:260px;"><input type="checkbox" class="zoneField" data-field="' + useKey + '" ' + checked + '> ' + label + '</label>' +
+      '<div class="input-group" style="width:50%;">' +
+      '<input class="form-control cmdSelector zoneField" data-field="' + cmdKey + '" data-subtype="info" value="' + val + '">' +
+      '<span class="input-group-btn">' +
+      '<a class="btn btn-default bt_selectCmd" title="Choisir une commande"><i class="fas fa-list"></i></a>' +
+      '<a class="btn btn-info bt_readValue" title="Récupérer la valeur"><i class="fas fa-download"></i></a>' +
+      '</span>' +
+      '</div>' +
+      '<span class="label label-default zoneLiveValue">-</span>' +
       '</div>';
   }
 
