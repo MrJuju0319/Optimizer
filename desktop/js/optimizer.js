@@ -215,7 +215,30 @@
       if (data.global_mode) $('[data-l1key="global_mode"]').val(data.global_mode);
       if (data.target_comfort) $('[data-l1key="target_comfort"]').val(data.target_comfort);
       if (data.zones_config) {
-        try { loadZonesData(JSON.parse(data.zones_config)); } catch (e) { $('#tableZones tbody').empty(); }
+        try {
+          var serverZones = JSON.parse(data.zones_config);
+          if (Array.isArray(serverZones) && serverZones.length > 0) {
+            loadZonesData(serverZones);
+          } else {
+            var zonesBackupIfEmpty = localStorage.getItem('optimizer.zones_config.backup');
+            if (zonesBackupIfEmpty) {
+              loadZonesData(JSON.parse(zonesBackupIfEmpty));
+            } else {
+              $('#tableZones tbody').empty();
+            }
+          }
+        } catch (e) {
+          try {
+            var zonesBackupIfParseError = localStorage.getItem('optimizer.zones_config.backup');
+            if (zonesBackupIfParseError) {
+              loadZonesData(JSON.parse(zonesBackupIfParseError));
+            } else {
+              $('#tableZones tbody').empty();
+            }
+          } catch (e1) {
+            $('#tableZones tbody').empty();
+          }
+        }
       } else {
         try {
           var zonesBackup = localStorage.getItem('optimizer.zones_config.backup');
