@@ -35,10 +35,10 @@
     params += paramLine('Température intérieure', 'use_temp_indoor', 'temp_indoor_cmd', '°C', z);
     params += paramLine('Hygrométrie intérieure', 'use_hygro_indoor', 'hygro_indoor_cmd', '%', z);
     params += paramLine('Luminosité intérieure', 'use_lux_indoor', 'lux_indoor_cmd', 'lux', z);
-    params += paramLine('Présence / occupation', 'use_presence', 'presence_cmd', 'occupé / non', z);
-    params += paramLine('Mouvement', 'use_motion', 'motion_cmd', 'mouvement / non', z);
-    params += paramLine('État fenêtre', 'use_window', 'window_cmd', 'ouverte / fermée', z);
-    params += paramLine('État porte', 'use_door', 'door_cmd', 'ouverte / fermée', z);
+    params += paramLine('Présence / occupation', 'use_presence', 'presence_cmd', 'occupé=1 / 0', z);
+    params += paramLine('Mouvement', 'use_motion', 'motion_cmd', 'mouvement=1 / 0', z);
+    params += paramLine('État fenêtre', 'use_window', 'window_cmd', 'ouverte=1 / fermée=0', z);
+    params += paramLine('État porte', 'use_door', 'door_cmd', 'ouverte=1 / fermée=0', z);
     params += paramLine('Température de consigne', 'use_setpoint', 'setpoint_cmd', '°C', z);
     params += paramLine('État chauffage', 'use_heating_state', 'heating_state_cmd', 'Off / Chaud / Froid', z);
     params += paramLine('État volet', 'use_shutter_state', 'shutter_state_cmd', 'position %', z);
