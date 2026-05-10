@@ -420,7 +420,4 @@
     }
   });
 
-  setInterval(function () {
-    refreshAllZoneValues();
-  }, 5000);
 })();
