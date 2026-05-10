@@ -41,6 +41,9 @@ $nextActions = config::byKey('next_actions', 'optimizer', '[]');
           </div>
         </form>
         <hr>
+        <div class="text-right" style="margin-bottom:8px;">
+          <button type="button" class="btn btn-success" id="bt_saveActuatorConfig"><i class="fas fa-save"></i> {{Sauvegarder}}</button>
+        </div>
         <h4>{{Commandes de pilotage par zone}}</h4>
         <table class="table table-condensed" id="tableGlobalPilotage" style="table-layout:fixed;">
           <colgroup>

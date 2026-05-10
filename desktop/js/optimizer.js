@@ -328,6 +328,11 @@
     e.stopPropagation();
     saveZonesConfiguration();
   });
+  $('#bt_saveActuatorConfig').off('click').on('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    saveZonesConfiguration();
+  });
   $('#bt_backPage').off('click').on('click', function () { window.history.back(); });
 
   $('body').off('click', '.bt_removeZone').on('click', '.bt_removeZone', function () {
