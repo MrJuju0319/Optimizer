@@ -25,8 +25,8 @@
 
   function buildZoneRow(zone) {
     var z = zone || {};
-    var parts = {tracked:'', info:'', value:'', unit:''};
-    [
+    var zoneId = 'z_' + (Date.now().toString(36) + Math.random().toString(36).slice(2, 6));
+    var params = [
       paramLine('Température intérieure', 'use_temp_indoor', 'temp_indoor_cmd', '°C', z),
       paramLine('Hygrométrie intérieure', 'use_hygro_indoor', 'hygro_indoor_cmd', '%', z),
       paramLine('Luminosité intérieure', 'use_lux_indoor', 'lux_indoor_cmd', 'lux', z),
@@ -39,23 +39,27 @@
       paramLine('État volet', 'use_shutter_state', 'shutter_state_cmd', 'position %', z),
       paramLine('État lumière', 'use_light_state', 'light_state_cmd', 'intensité %', z),
       paramLine('Qualité air CO2', 'use_co2', 'co2_cmd', 'ppm', z)
-    ].forEach(function (p) { parts.tracked += p.tracked; parts.info += p.info; parts.value += p.value; parts.unit += p.unit; });
-
-    return '<tr>' +
-      '<td style="vertical-align:top;"><input class="form-control zoneField" data-field="name" value="' + (z.name || 'Nouvelle zone') + '"></td>' +
-      '<td style="vertical-align:top;"><div class="zoneParams">' + parts.tracked + '</div></td>' +
-      '<td style="vertical-align:top;"><div class="zoneParams">' + parts.info + '</div></td>' +
-      '<td style="vertical-align:top;"><div class="zoneParams">' + parts.value + '</div></td>' +
-      '<td style="vertical-align:top;"><div class="zoneParams">' + parts.unit + '</div></td>' +
-      '<td style="vertical-align:top;"><a class="btn btn-danger btn-xs bt_removeZone"><i class="fas fa-trash"></i> Supprimer</a></td>' +
-      '</tr>';
+    ];
+    var html = '';
+    params.forEach(function (p, i) {
+      html += '<tr data-zone-id="' + zoneId + '"' + (i === 0 ? ' class="zone-start"' : '') + '>';
+      if (i === 0) html += '<td rowspan="' + params.length + '" style="vertical-align:top;"><input class="form-control zoneField" data-field="name" value="' + (z.name || 'Nouvelle zone') + '"></td>';
+      html += '<td style="vertical-align:top;">' + p.tracked + '</td>';
+      html += '<td style="vertical-align:top;">' + p.info + '</td>';
+      html += '<td style="vertical-align:top;">' + p.value + '</td>';
+      html += '<td style="vertical-align:top;">' + p.unit + '</td>';
+      if (i === 0) html += '<td rowspan="' + params.length + '" style="vertical-align:top;"><a class="btn btn-danger btn-xs bt_removeZone"><i class="fas fa-trash"></i> Supprimer</a></td>';
+      html += '</tr>';
+    });
+    return html;
   }
 
   function getZonesData() {
     var zones = [];
-    $('#tableZones tbody tr').each(function () {
+    $('#tableZones tbody tr.zone-start').each(function () {
+      var zoneId = $(this).attr('data-zone-id');
       var zone = {};
-      $(this).find('.zoneField').each(function () {
+      $('#tableZones tbody tr[data-zone-id="' + zoneId + '"]').find('.zoneField').each(function () {
         var key = $(this).data('field');
         zone[key] = $(this).attr('type') === 'checkbox' ? $(this).is(':checked') : $(this).val();
       });
@@ -78,8 +82,7 @@
   function refreshOneValue($input) {
     var human = ($input.val() || "").trim();
     var $row = $input.closest("tr");
-    var idx = $row.find(".cmdSelector").index($input);
-    var $badge = $row.find(".zoneLiveValue").eq(idx);
+    var $badge = $row.find(".zoneLiveValue").first();
     if (!human) { $badge.text("-"); return; }
     if (!jeedom.cmd || !jeedom.cmd.byHumanName) { $badge.text("N/A"); return; }
     jeedom.cmd.byHumanName({
@@ -141,7 +144,10 @@
   $('#bt_addZone').off('click').on('click', function () { $('#tableZones tbody').append(buildZoneRow()); });
   $('#bt_backPage').off('click').on('click', function () { window.history.back(); });
 
-  $('body').off('click', '.bt_removeZone').on('click', '.bt_removeZone', function () { $(this).closest('tr').remove(); });
+  $('body').off('click', '.bt_removeZone').on('click', '.bt_removeZone', function () {
+    var zoneId = $(this).closest('tr').attr('data-zone-id');
+    $('#tableZones tbody tr[data-zone-id="' + zoneId + '"]').remove();
+  });
 
   $.ajax({
     type: 'POST',
