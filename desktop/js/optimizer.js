@@ -262,8 +262,8 @@
         }
         var zoneCount = getZonesData().length;
         $('#div_alert').showAlert({message: 'Configuration sauvegardée (' + zoneCount + ' zone(s))', level: 'success'});
-        $('#opt_mode').text(payload.global_mode);
-        $('#opt_comfort').text(payload.target_comfort + '°C');
+        if (typeof payload.global_mode !== 'undefined') $('#opt_mode').text(payload.global_mode);
+        if (typeof payload.target_comfort !== 'undefined') $('#opt_comfort').text(payload.target_comfort + '°C');
       }
     });
   }

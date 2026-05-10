@@ -37,21 +37,6 @@ $nextActions = config::byKey('next_actions', 'optimizer', '[]');
       <div role="tabpanel" class="tab-pane" id="opt_global">
         <form class="form-horizontal">
           <div class="form-group">
-            <label class="col-sm-3 control-label">{{Mode global}}</label>
-            <div class="col-sm-4">
-              <select class="form-control configKey" data-l1key="global_mode">
-                <option value="auto">{{Auto}}</option>
-                <option value="eco">{{Eco}}</option>
-                <option value="confort">{{Confort}}</option>
-                <option value="absence">{{Absence}}</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-sm-3 control-label">{{Confort cible (°C)}}</label>
-            <div class="col-sm-2"><input type="number" class="form-control configKey" data-l1key="target_comfort" min="15" max="28" step="0.5"></div>
-          </div>
-          <div class="form-group">
             
           </div>
         </form>
