@@ -60,7 +60,7 @@ $nextActions = config::byKey('next_actions', 'optimizer', '[]');
 
       <div role="tabpanel" class="tab-pane" id="opt_zone">
         <div class="text-right" style="margin-bottom:8px;">
-          <a class="btn btn-success" id="bt_saveZoneConfig"><i class="fas fa-save"></i> {{Sauvegarder}}</a>
+          <button type="button" class="btn btn-success" id="bt_saveZoneConfig"><i class="fas fa-save"></i> {{Sauvegarder}}</button>
           <a class="btn btn-primary" id="bt_addZone"><i class="fas fa-plus-circle"></i> {{Ajouter une zone}}</a>
         </div>
         <table class="table table-condensed" id="tableZones" style="table-layout:fixed;">

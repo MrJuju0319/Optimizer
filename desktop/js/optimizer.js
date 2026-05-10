@@ -145,7 +145,11 @@
     refreshOneValue($(this).closest('.input-group').find('.cmdSelector').first());
   });
   $('#bt_addZone').off('click').on('click', function () { $('#tableZones tbody').append(buildZoneRow()); });
-  $('#bt_saveZoneConfig').off('click').on('click', function () { saveAllConfiguration(); });
+  $('#bt_saveZoneConfig').off('click').on('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    saveAllConfiguration();
+  });
   $('#bt_backPage').off('click').on('click', function () { window.history.back(); });
 
   $('body').off('click', '.bt_removeZone').on('click', '.bt_removeZone', function () {
