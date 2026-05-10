@@ -107,6 +107,12 @@
     });
   }
 
+  function refreshAllZoneValues() {
+    $('#tableZones tbody .cmdSelector').each(function () {
+      refreshOneValue($(this));
+    });
+  }
+
 
   function getExtraUserParameters() {
     var extra = {};
@@ -169,6 +175,7 @@
           return;
         }
         $('#div_alert').showAlert({message: 'Zones sauvegardées (' + getZonesData().length + ' zone(s))', level: 'success'});
+        refreshAllZoneValues();
       }
     });
   }
