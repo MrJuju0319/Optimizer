@@ -64,7 +64,7 @@ $nextActions = config::byKey('next_actions', 'optimizer', '[]');
             <col style="width:26%;">
             <col style="width:26%;">
           </colgroup>
-          <thead><tr><th>{{Zone}}</th><th>{{Commande chauffage / clim}}</th><th>{{Commande volet}}</th><th>{{Commande lumière}}</th></tr></thead>
+          <thead><tr><th>{{Zone}}</th><th>{{Commandes chauffage}}</th><th>{{Commandes volet}}</th><th>{{Commandes lumière}}</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
