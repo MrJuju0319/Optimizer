@@ -69,13 +69,13 @@ $nextActions = config::byKey('next_actions', 'optimizer', '[]');
           <thead><tr><th>{{Zone}}</th><th>{{Capteur température (Info)}}</th><th>{{Action chauffage}}</th><th>{{Action clim}}</th><th>{{Action volet}}</th><th>{{Action lumière}}</th><th>{{Action ventilation}}</th><th>{{Actions}}</th></tr></thead>
           <tbody>
             <tr>
-              <td><input class="form-control" value="Salon"></td>
-              <td><div class="input-group"><input class="form-control cmdSelector" data-subtype="info"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd"><i class="fas fa-list"></i></a></span></div></td>
-              <td><div class="input-group"><input class="form-control cmdSelector" data-subtype="action"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd"><i class="fas fa-list"></i></a></span></div></td>
-              <td><div class="input-group"><input class="form-control cmdSelector" data-subtype="action"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd"><i class="fas fa-list"></i></a></span></div></td>
-              <td><div class="input-group"><input class="form-control cmdSelector" data-subtype="action"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd"><i class="fas fa-list"></i></a></span></div></td>
-              <td><div class="input-group"><input class="form-control cmdSelector" data-subtype="action"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd"><i class="fas fa-list"></i></a></span></div></td>
-              <td><div class="input-group"><input class="form-control cmdSelector" data-subtype="action"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd"><i class="fas fa-list"></i></a></span></div></td>
+              <td><input class="form-control zoneField" data-field="name" value="Salon"></td>
+              <td><div class="input-group"><input class="form-control cmdSelector zoneField" data-field="temp_info" data-subtype="info"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd"><i class="fas fa-list"></i></a></span></div></td>
+              <td><div class="input-group"><input class="form-control cmdSelector zoneField" data-field="heat_action" data-subtype="action"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd"><i class="fas fa-list"></i></a></span></div></td>
+              <td><div class="input-group"><input class="form-control cmdSelector zoneField" data-field="cool_action" data-subtype="action"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd"><i class="fas fa-list"></i></a></span></div></td>
+              <td><div class="input-group"><input class="form-control cmdSelector zoneField" data-field="shutter_action" data-subtype="action"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd"><i class="fas fa-list"></i></a></span></div></td>
+              <td><div class="input-group"><input class="form-control cmdSelector zoneField" data-field="light_action" data-subtype="action"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd"><i class="fas fa-list"></i></a></span></div></td>
+              <td><div class="input-group"><input class="form-control cmdSelector zoneField" data-field="vent_action" data-subtype="action"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd"><i class="fas fa-list"></i></a></span></div></td>
               <td><a class="btn btn-danger btn-xs bt_removeZone"><i class="fas fa-trash"></i> {{Supprimer}}</a></td>
             </tr>
           </tbody>
