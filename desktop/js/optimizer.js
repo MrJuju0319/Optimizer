@@ -15,41 +15,38 @@
   function paramLine(label, useKey, cmdKey, unitText, z) {
     var checked = z[useKey] ? 'checked' : '';
     var val = z[cmdKey] || '';
-    return '<div class="row" style="margin-bottom:4px;">' +
-      '<div class="col-sm-3"><label><input type="checkbox" class="zoneField" data-field="' + useKey + '" ' + checked + '> ' + label + '</label></div>' +
-      '<div class="col-sm-5">' +
-      '<div class="input-group">' +
-      '<input class="form-control cmdSelector zoneField" data-field="' + cmdKey + '" data-subtype="info" value="' + val + '">' +
-      '<span class="input-group-btn">' +
-      '<a class="btn btn-default bt_selectCmd" title="Choisir une commande"><i class="fas fa-list"></i></a>' +
-      '<a class="btn btn-info bt_readValue" title="Récupérer la valeur"><i class="fas fa-download"></i></a>' +
-      '</span></div></div>' +
-      '<div class="col-sm-2"><span class="label label-default zoneLiveValue">-</span></div>' +
-      '<div class="col-sm-2"><span class="label label-info">' + unitText + '</span></div>' +
-      '</div>';
+    return {
+      tracked: '<div style="margin-bottom:6px;"><label><input type="checkbox" class="zoneField" data-field="' + useKey + '" ' + checked + '> ' + label + '</label></div>',
+      info: '<div class="input-group" style="margin-bottom:4px;"><input class="form-control cmdSelector zoneField" data-field="' + cmdKey + '" data-subtype="info" value="' + val + '"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd" title="Choisir une commande"><i class="fas fa-list"></i></a><a class="btn btn-info bt_readValue" title="Récupérer la valeur"><i class="fas fa-download"></i></a></span></div>',
+      value: '<div style="margin-bottom:6px;"><span class="label label-default zoneLiveValue">-</span></div>',
+      unit: '<div style="margin-bottom:6px;"><span class="label label-info">' + unitText + '</span></div>'
+    };
   }
 
   function buildZoneRow(zone) {
     var z = zone || {};
-    var params = '';
-    params += paramLine('Température intérieure', 'use_temp_indoor', 'temp_indoor_cmd', '°C', z);
-    params += paramLine('Hygrométrie intérieure', 'use_hygro_indoor', 'hygro_indoor_cmd', '%', z);
-    params += paramLine('Luminosité intérieure', 'use_lux_indoor', 'lux_indoor_cmd', 'lux', z);
-    params += paramLine('Présence / occupation', 'use_presence', 'presence_cmd', 'occupé=1 / 0', z);
-    params += paramLine('Mouvement', 'use_motion', 'motion_cmd', 'mouvement=1 / 0', z);
-    params += paramLine('État fenêtre', 'use_window', 'window_cmd', 'ouverte=1 / fermée=0', z);
-    params += paramLine('État porte', 'use_door', 'door_cmd', 'ouverte=1 / fermée=0', z);
-    params += paramLine('Température de consigne', 'use_setpoint', 'setpoint_cmd', '°C', z);
-    params += paramLine('État chauffage', 'use_heating_state', 'heating_state_cmd', 'Off / Chaud / Froid', z);
-    params += paramLine('État volet', 'use_shutter_state', 'shutter_state_cmd', 'position %', z);
-    params += paramLine('État lumière', 'use_light_state', 'light_state_cmd', 'intensité %', z);
-    params += paramLine('Qualité air CO2', 'use_co2', 'co2_cmd', 'ppm', z);
+    var parts = {tracked:'', info:'', value:'', unit:''};
+    [
+      paramLine('Température intérieure', 'use_temp_indoor', 'temp_indoor_cmd', '°C', z),
+      paramLine('Hygrométrie intérieure', 'use_hygro_indoor', 'hygro_indoor_cmd', '%', z),
+      paramLine('Luminosité intérieure', 'use_lux_indoor', 'lux_indoor_cmd', 'lux', z),
+      paramLine('Présence / occupation', 'use_presence', 'presence_cmd', 'occupé=1 / 0', z),
+      paramLine('Mouvement', 'use_motion', 'motion_cmd', 'mouvement=1 / 0', z),
+      paramLine('État fenêtre', 'use_window', 'window_cmd', 'ouverte=1 / fermée=0', z),
+      paramLine('État porte', 'use_door', 'door_cmd', 'ouverte=1 / fermée=0', z),
+      paramLine('Température de consigne', 'use_setpoint', 'setpoint_cmd', '°C', z),
+      paramLine('État chauffage', 'use_heating_state', 'heating_state_cmd', 'Off / Chaud / Froid', z),
+      paramLine('État volet', 'use_shutter_state', 'shutter_state_cmd', 'position %', z),
+      paramLine('État lumière', 'use_light_state', 'light_state_cmd', 'intensité %', z),
+      paramLine('Qualité air CO2', 'use_co2', 'co2_cmd', 'ppm', z)
+    ].forEach(function (p) { parts.tracked += p.tracked; parts.info += p.info; parts.value += p.value; parts.unit += p.unit; });
 
     return '<tr>' +
       '<td style="vertical-align:top;"><input class="form-control zoneField" data-field="name" value="' + (z.name || 'Nouvelle zone') + '"></td>' +
-      '<td style="vertical-align:top;"><div class="zoneParams">' +
-      '<div class="row" style="font-weight:bold;margin-bottom:6px;"><div class="col-sm-3">Information</div><div class="col-sm-5">Commande Jeedom</div><div class="col-sm-2">Valeur</div><div class="col-sm-2">Unité</div></div>' +
-      params + '</div></td>' +
+      '<td style="vertical-align:top;"><div class="zoneParams">' + parts.tracked + '</div></td>' +
+      '<td style="vertical-align:top;"><div class="zoneParams">' + parts.info + '</div></td>' +
+      '<td style="vertical-align:top;"><div class="zoneParams">' + parts.value + '</div></td>' +
+      '<td style="vertical-align:top;"><div class="zoneParams">' + parts.unit + '</div></td>' +
       '<td style="vertical-align:top;"><a class="btn btn-danger btn-xs bt_removeZone"><i class="fas fa-trash"></i> Supprimer</a></td>' +
       '</tr>';
   }
@@ -80,7 +77,9 @@
 
   function refreshOneValue($input) {
     var human = ($input.val() || "").trim();
-    var $badge = $input.closest(".form-inline").find(".zoneLiveValue");
+    var $row = $input.closest("tr");
+    var idx = $row.find(".cmdSelector").index($input);
+    var $badge = $row.find(".zoneLiveValue").eq(idx);
     if (!human) { $badge.text("-"); return; }
     if (!jeedom.cmd || !jeedom.cmd.byHumanName) { $badge.text("N/A"); return; }
     jeedom.cmd.byHumanName({

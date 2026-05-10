@@ -63,7 +63,7 @@ $nextActions = config::byKey('next_actions', 'optimizer', '[]');
           <a class="btn btn-primary" id="bt_addZone"><i class="fas fa-plus-circle"></i> {{Ajouter une zone}}</a>
         </div>
         <table class="table table-condensed" id="tableZones" style="table-layout:fixed;">
-          <thead><tr><th>{{Zone}}</th><th>{{Données prises en compte}}</th><th>{{Actions}}</th></tr></thead>
+          <thead><tr><th>{{Zone}}</th><th>{{Données prises en compte}}</th><th>{{Information}}</th><th>{{Valeur}}</th><th>{{Unité}}</th><th>{{Action}}</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
