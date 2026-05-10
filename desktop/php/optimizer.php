@@ -13,6 +13,10 @@ $nextActions = config::byKey('next_actions', 'optimizer', '[]');
 <div class="row row-overflow" id="optimizerContainer">
   <div class="col-lg-12">
     <legend><i class="fas fa-brain"></i> {{Optimizer}}</legend>
+    <div class="pull-right" style="margin-top:-38px;">
+      <a class="btn btn-default" id="bt_backPage"><i class="fas fa-arrow-left"></i> {{Retour}}</a>
+      <a class="btn btn-success" id="bt_saveAll"><i class="fas fa-save"></i> {{Sauvegarder}}</a>
+    </div>
 
     <ul class="nav nav-tabs" role="tablist">
       <li role="presentation" class="active"><a href="#opt_dashboard" aria-controls="opt_dashboard" role="tab" data-toggle="tab"><i class="fas fa-tachometer-alt"></i> {{Dashboard}}</a></li>

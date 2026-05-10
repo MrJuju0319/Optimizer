@@ -34,6 +34,15 @@
     $('#tableZones tbody').append(buildZoneRow());
   });
 
+
+  $('#bt_backPage').off('click').on('click', function () {
+    window.history.back();
+  });
+
+  $('#bt_saveAll').off('click').on('click', function () {
+    $('#bt_saveGlobal').trigger('click');
+  });
+
   $('body').off('click', '.bt_removeZone').on('click', '.bt_removeZone', function () {
     $(this).closest('tr').remove();
   });
