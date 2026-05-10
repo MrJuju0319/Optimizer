@@ -113,11 +113,17 @@
     payload.zones_config = JSON.stringify(getZonesData());
     payload.user_parameters = JSON.stringify(getExtraUserParameters());
 
-    jeedom.config.save({
-      plugin: 'optimizer',
-      configuration: payload,
-      error: function (error) { $('#div_alert').showAlert({message: error.message, level: 'danger'}); },
-      success: function () {
+    $.ajax({
+      type: 'POST',
+      url: 'plugins/optimizer/core/ajax/optimizer.ajax.php',
+      dataType: 'json',
+      data: {action: 'saveConfig', payload: JSON.stringify(payload)},
+      error: function (request) { $('#div_alert').showAlert({message: request.responseText || 'Erreur sauvegarde', level: 'danger'}); },
+      success: function (res) {
+        if (res.state !== 'ok') {
+          $('#div_alert').showAlert({message: (res.result || 'Erreur sauvegarde'), level: 'danger'});
+          return;
+        }
         var zoneCount = getZonesData().length;
         $('#div_alert').showAlert({message: 'Configuration sauvegardée (' + zoneCount + ' zone(s))', level: 'success'});
         $('#opt_mode').text(payload.global_mode);
@@ -137,10 +143,17 @@
   $('#bt_saveAll, #bt_saveGlobal').off('click').on('click', function () { saveAllConfiguration(); });
   $('body').off('click', '.bt_removeZone').on('click', '.bt_removeZone', function () { $(this).closest('tr').remove(); });
 
-  jeedom.config.load({
-    plugin: 'optimizer',
-    configuration: ['global_mode', 'target_comfort', 'zones_config', 'user_parameters'],
-    success: function (data) {
+  $.ajax({
+    type: 'POST',
+    url: 'plugins/optimizer/core/ajax/optimizer.ajax.php',
+    dataType: 'json',
+    data: {action: 'loadConfig', keys: JSON.stringify(['global_mode', 'target_comfort', 'zones_config', 'user_parameters'])},
+    success: function (res) {
+      if (!res || res.state !== 'ok') {
+        $('#tableZones tbody').empty().append(buildZoneRow({use_temp_indoor:true,use_setpoint:true}));
+        return;
+      }
+      var data = res.result || {};
       if (data.global_mode) $('[data-l1key="global_mode"]').val(data.global_mode);
       if (data.target_comfort) $('[data-l1key="target_comfort"]').val(data.target_comfort);
       if (data.zones_config) {
@@ -148,6 +161,9 @@
       } else {
         $('#tableZones tbody').empty().append(buildZoneRow({use_temp_indoor:true,use_setpoint:true}));
       }
+    },
+    error: function () {
+      $('#tableZones tbody').empty().append(buildZoneRow({use_temp_indoor:true,use_setpoint:true}));
     }
   });
 })();
