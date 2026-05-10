@@ -117,7 +117,12 @@
     var zoneId = $row.attr('data-zone-id');
     var $meta = $row.find('.zoneParamMeta').first();
     if ($meta.length === 0) return;
-    var p = paramLine($meta.data('label'), $meta.data('usekey'), $meta.data('cmdkey'), $meta.data('unit'), {});
+    var baseUseKey = $meta.data('usekey');
+    var baseCmdKey = $meta.data('cmdkey');
+    var suffix = 'extra_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+    var extraUseKey = baseUseKey + '__' + suffix;
+    var extraCmdKey = baseCmdKey + '__' + suffix;
+    var p = paramLine($meta.data('label'), extraUseKey, extraCmdKey, $meta.data('unit'), {});
     var extraInfo = p.info.replace('</span></div>', '<a class="btn btn-danger bt_removeParamLine" title="Supprimer cette ligne"><i class="fas fa-minus"></i></a></span></div>');
     var html = '<tr data-zone-id="' + zoneId + '" class="zone-extra-line">' +
       '<td style="vertical-align:top;">' + p.tracked + '</td>' +
