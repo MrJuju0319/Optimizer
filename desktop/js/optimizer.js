@@ -147,6 +147,32 @@
     });
   }
 
+  function saveZonesConfiguration() {
+    var payload = {
+      zones_config: JSON.stringify(getZonesData()),
+      user_parameters: JSON.stringify(getExtraUserParameters())
+    };
+    try {
+      localStorage.setItem('optimizer.zones_config.backup', payload.zones_config);
+      localStorage.setItem('optimizer.user_parameters.backup', payload.user_parameters);
+    } catch (e) {}
+
+    $.ajax({
+      type: 'POST',
+      url: 'plugins/optimizer/core/ajax/optimizer.ajax.php',
+      dataType: 'json',
+      data: {action: 'saveConfig', payload: JSON.stringify(payload)},
+      error: function (request) { $('#div_alert').showAlert({message: request.responseText || 'Erreur sauvegarde des zones', level: 'danger'}); },
+      success: function (res) {
+        if (!res || res.state !== 'ok') {
+          $('#div_alert').showAlert({message: (res && res.result) || 'Erreur sauvegarde des zones', level: 'danger'});
+          return;
+        }
+        $('#div_alert').showAlert({message: 'Zones sauvegardées (' + getZonesData().length + ' zone(s))', level: 'success'});
+      }
+    });
+  }
+
   $('body').off('click', '.bt_selectCmd').on('click', '.bt_selectCmd', function () {
     selectCmd($(this).closest('.input-group').find('.cmdSelector').first());
   });
@@ -157,7 +183,7 @@
   $('#bt_saveZoneConfig').off('click').on('click', function (e) {
     e.preventDefault();
     e.stopPropagation();
-    saveAllConfiguration();
+    saveZonesConfiguration();
   });
   $('#bt_backPage').off('click').on('click', function () { window.history.back(); });
 
