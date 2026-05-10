@@ -1,0 +1,16 @@
+{
+  "id": "optimizer",
+  "name": "Optimizer",
+  "description": "Pilotage intelligent de la maison : volets, lumières, chauffage, climatisation et ventilation.",
+  "licence": "AGPL",
+  "author": "TheNonogta",
+  "require": "4.4",
+  "category": "automation",
+  "hasDependency": false,
+  "hasOwnDeamon": false,
+  "maxDependancyInstallTime": 0,
+  "changelog": "https://github.com/TheNonogta/optimizer/blob/main/docs/fr_FR/changelog.md",
+  "documentation": "https://github.com/TheNonogta/optimizer/blob/main/docs/fr_FR/index.md",
+  "language": ["fr_FR", "en_US"],
+  "compatibility": "4.4"
+}
