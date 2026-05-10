@@ -16,8 +16,8 @@
     var checked = z[useKey] ? 'checked' : '';
     var val = z[cmdKey] || '';
     return {
-      tracked: '<div style="margin-bottom:6px;"><label><input type="checkbox" class="zoneField" data-field="' + useKey + '" ' + checked + '> ' + label + '</label></div>',
-      info: '<div class="input-group" style="margin-bottom:4px;"><input class="form-control cmdSelector zoneField" data-field="' + cmdKey + '" data-subtype="info" value="' + val + '"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd" title="Choisir une commande"><i class="fas fa-list"></i></a><a class="btn btn-info bt_readValue" title="Récupérer la valeur"><i class="fas fa-download"></i></a></span></div>',
+      tracked: '<div class="zoneParamMeta" data-label="' + label + '" data-usekey="' + useKey + '" data-cmdkey="' + cmdKey + '" data-unit="' + unitText + '" style="margin-bottom:6px;"><label><input type="checkbox" class="zoneField" data-field="' + useKey + '" ' + checked + '> ' + label + '</label></div>',
+      info: '<div class="input-group" style="margin-bottom:4px;"><input class="form-control cmdSelector zoneField" data-field="' + cmdKey + '" data-subtype="info" value="' + val + '"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd" title="Choisir une commande"><i class="fas fa-list"></i></a><a class="btn btn-info bt_readValue" title="Récupérer la valeur"><i class="fas fa-download"></i></a><a class="btn btn-success bt_addParamLine" title="Ajouter une ligne similaire"><i class="fas fa-plus"></i></a></span></div>',
       value: '<div style="margin-bottom:6px;"><span class="label label-default zoneLiveValue">-</span></div>',
       unit: '<div style="margin-bottom:6px;"><span class="label label-info">' + unitText + '</span></div>'
     };
@@ -113,6 +113,26 @@
     });
   }
 
+  function addSimilarParamLine($row) {
+    var zoneId = $row.attr('data-zone-id');
+    var $meta = $row.find('.zoneParamMeta').first();
+    if ($meta.length === 0) return;
+    var p = paramLine($meta.data('label'), $meta.data('usekey'), $meta.data('cmdkey'), $meta.data('unit'), {});
+    var html = '<tr data-zone-id="' + zoneId + '">' +
+      '<td style="vertical-align:top;">' + p.tracked + '</td>' +
+      '<td style="vertical-align:top;">' + p.info + '</td>' +
+      '<td style="vertical-align:top;">' + p.value + '</td>' +
+      '<td style="vertical-align:top;">' + p.unit + '</td>' +
+      '</tr>';
+    $row.after(html);
+    var $zoneStart = $('#tableZones tbody tr[data-zone-id="' + zoneId + '"].zone-start');
+    var $rowspans = $zoneStart.find('td[rowspan]');
+    $rowspans.each(function () {
+      var current = parseInt($(this).attr('rowspan') || '1', 10);
+      $(this).attr('rowspan', current + 1);
+    });
+  }
+
 
   function getExtraUserParameters() {
     var extra = {};
@@ -185,6 +205,9 @@
   });
   $('body').off('click', '.bt_readValue').on('click', '.bt_readValue', function () {
     refreshOneValue($(this).closest('.input-group').find('.cmdSelector').first());
+  });
+  $('body').off('click', '.bt_addParamLine').on('click', '.bt_addParamLine', function () {
+    addSimilarParamLine($(this).closest('tr'));
   });
   $('#bt_addZone').off('click').on('click', function () { $('#tableZones tbody').append(buildZoneRow()); });
   $('#bt_saveZoneConfig').off('click').on('click', function (e) {
