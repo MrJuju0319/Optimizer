@@ -1,0 +1,33 @@
+{
+  "id": "optimizer",
+  "name": "Optimizer",
+  "pluginVersion": "0.1.0",
+  "description": {
+    "fr_FR": "Plugin de pilotage intelligent de la maison (volets, lumières, chauffage, climatisation, ventilation).",
+    "en_US": "Smart home control plugin (shutters, lights, heating, air conditioning, ventilation)."
+  },
+  "licence": "AGPL",
+  "author": "TheNonogta",
+  "require": "4.4",
+  "category": "automatisation",
+  "hasDependency": false,
+  "hasOwnDeamon": false,
+  "maxDependancyInstallTime": 0,
+  "changelog_beta": "https://github.com/TheNonogta/optimizer/blob/main/docs/fr_FR/changelog.md",
+  "changelog": "https://github.com/TheNonogta/optimizer/blob/main/docs/fr_FR/changelog.md",
+  "documentation_beta": "https://github.com/TheNonogta/optimizer/blob/main/docs/fr_FR/index.md",
+  "documentation": "https://github.com/TheNonogta/optimizer/blob/main/docs/fr_FR/index.md",
+  "language": [
+    "fr_FR",
+    "en_US"
+  ],
+  "compatibility": [
+    "smart",
+    "luna",
+    "atlas",
+    "rpi",
+    "docker",
+    "diy",
+    "mobile"
+  ]
+}

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Optimizer logo">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#14b8a6"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
+  <path d="M120 292c38-66 95-98 170-96 40 1 74 12 102 32" fill="none" stroke="#fff" stroke-width="24" stroke-linecap="round"/>
+  <path d="M392 228l0 84-78 0" fill="none" stroke="#fff" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="178" cy="312" r="22" fill="#fff"/>
+  <circle cx="248" cy="268" r="22" fill="#fff" opacity="0.85"/>
+  <circle cx="322" cy="250" r="22" fill="#fff" opacity="0.7"/>
+</svg>
