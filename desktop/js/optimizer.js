@@ -12,13 +12,6 @@
     });
   }
 
-  $('body').off('click', '.bt_selectCmd').on('click', '.bt_selectCmd', function () {
-    var $input = $(this).closest('.input-group').find('.cmdSelector');
-    selectCmd($input);
-  });
-
-
-
   function buildZoneRow() {
     return '<tr>' +
       '<td><input class="form-control" value="Nouvelle zone"></td>' +
@@ -28,11 +21,21 @@
       '<td><div class="input-group"><input class="form-control cmdSelector" data-subtype="action"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd"><i class="fas fa-list"></i></a></span></div></td>' +
       '<td><div class="input-group"><input class="form-control cmdSelector" data-subtype="action"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd"><i class="fas fa-list"></i></a></span></div></td>' +
       '<td><div class="input-group"><input class="form-control cmdSelector" data-subtype="action"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd"><i class="fas fa-list"></i></a></span></div></td>' +
+      '<td><a class="btn btn-danger btn-xs bt_removeZone"><i class="fas fa-trash"></i> Supprimer</a></td>' +
       '</tr>';
   }
 
+  $('body').off('click', '.bt_selectCmd').on('click', '.bt_selectCmd', function () {
+    var $input = $(this).closest('.input-group').find('.cmdSelector');
+    selectCmd($input);
+  });
+
   $('#bt_addZone').off('click').on('click', function () {
     $('#tableZones tbody').append(buildZoneRow());
+  });
+
+  $('body').off('click', '.bt_removeZone').on('click', '.bt_removeZone', function () {
+    $(this).closest('tr').remove();
   });
 
   $('#bt_saveGlobal').off('click').on('click', function () {

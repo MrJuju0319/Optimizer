@@ -62,7 +62,7 @@ $nextActions = config::byKey('next_actions', 'optimizer', '[]');
           <a class="btn btn-primary" id="bt_addZone"><i class="fas fa-plus-circle"></i> {{Ajouter une zone}}</a>
         </div>
         <table class="table table-condensed" id="tableZones">
-          <thead><tr><th>{{Zone}}</th><th>{{Capteur température (Info)}}</th><th>{{Action chauffage}}</th><th>{{Action clim}}</th><th>{{Action volet}}</th><th>{{Action lumière}}</th><th>{{Action ventilation}}</th></tr></thead>
+          <thead><tr><th>{{Zone}}</th><th>{{Capteur température (Info)}}</th><th>{{Action chauffage}}</th><th>{{Action clim}}</th><th>{{Action volet}}</th><th>{{Action lumière}}</th><th>{{Action ventilation}}</th><th>{{Actions}}</th></tr></thead>
           <tbody>
             <tr>
               <td><input class="form-control" value="Salon"></td>
@@ -72,6 +72,7 @@ $nextActions = config::byKey('next_actions', 'optimizer', '[]');
               <td><div class="input-group"><input class="form-control cmdSelector" data-subtype="action"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd"><i class="fas fa-list"></i></a></span></div></td>
               <td><div class="input-group"><input class="form-control cmdSelector" data-subtype="action"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd"><i class="fas fa-list"></i></a></span></div></td>
               <td><div class="input-group"><input class="form-control cmdSelector" data-subtype="action"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd"><i class="fas fa-list"></i></a></span></div></td>
+              <td><a class="btn btn-danger btn-xs bt_removeZone"><i class="fas fa-trash"></i> {{Supprimer}}</a></td>
             </tr>
           </tbody>
         </table>
