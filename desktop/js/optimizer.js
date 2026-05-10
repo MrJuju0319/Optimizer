@@ -114,6 +114,10 @@
     $('.configKey').each(function () { payload[$(this).attr('data-l1key')] = $(this).val(); });
     payload.zones_config = JSON.stringify(getZonesData());
     payload.user_parameters = JSON.stringify(getExtraUserParameters());
+    try {
+      localStorage.setItem('optimizer.zones_config.backup', payload.zones_config);
+      localStorage.setItem('optimizer.user_parameters.backup', payload.user_parameters);
+    } catch (e) {}
 
     $.ajax({
       type: 'POST',
@@ -141,6 +145,7 @@
     refreshOneValue($(this).closest('.input-group').find('.cmdSelector').first());
   });
   $('#bt_addZone').off('click').on('click', function () { $('#tableZones tbody').append(buildZoneRow()); });
+  $('#bt_saveZoneConfig').off('click').on('click', function () { saveAllConfiguration(); });
   $('#bt_backPage').off('click').on('click', function () { window.history.back(); });
 
   $('body').off('click', '.bt_removeZone').on('click', '.bt_removeZone', function () {
@@ -155,7 +160,16 @@
     data: {action: 'loadConfig', keys: JSON.stringify(['global_mode', 'target_comfort', 'zones_config', 'user_parameters'])},
     success: function (res) {
       if (!res || res.state !== 'ok') {
-        $('#tableZones tbody').empty().append(buildZoneRow({use_temp_indoor:true,use_setpoint:true}));
+        try {
+          var zonesBackupOnError = localStorage.getItem('optimizer.zones_config.backup');
+          if (zonesBackupOnError) {
+            loadZonesData(JSON.parse(zonesBackupOnError));
+          } else {
+            $('#tableZones tbody').empty().append(buildZoneRow({use_temp_indoor:true}));
+          }
+        } catch (e0) {
+          $('#tableZones tbody').empty().append(buildZoneRow({use_temp_indoor:true}));
+        }
         return;
       }
       var data = res.result || {};
@@ -164,11 +178,29 @@
       if (data.zones_config) {
         try { loadZonesData(JSON.parse(data.zones_config)); } catch (e) { $('#tableZones tbody').append(buildZoneRow()); }
       } else {
-        $('#tableZones tbody').empty().append(buildZoneRow({use_temp_indoor:true,use_setpoint:true}));
+        try {
+          var zonesBackup = localStorage.getItem('optimizer.zones_config.backup');
+          if (zonesBackup) {
+            loadZonesData(JSON.parse(zonesBackup));
+          } else {
+            $('#tableZones tbody').empty().append(buildZoneRow({use_temp_indoor:true}));
+          }
+        } catch (e2) {
+          $('#tableZones tbody').empty().append(buildZoneRow({use_temp_indoor:true}));
+        }
       }
     },
     error: function () {
-      $('#tableZones tbody').empty().append(buildZoneRow({use_temp_indoor:true,use_setpoint:true}));
+      try {
+        var zonesBackupOnAjaxError = localStorage.getItem('optimizer.zones_config.backup');
+        if (zonesBackupOnAjaxError) {
+          loadZonesData(JSON.parse(zonesBackupOnAjaxError));
+        } else {
+          $('#tableZones tbody').empty().append(buildZoneRow({use_temp_indoor:true}));
+        }
+      } catch (e3) {
+        $('#tableZones tbody').empty().append(buildZoneRow({use_temp_indoor:true}));
+      }
     }
   });
 })();
