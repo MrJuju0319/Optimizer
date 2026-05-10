@@ -17,6 +17,24 @@
     selectCmd($input);
   });
 
+
+
+  function buildZoneRow() {
+    return '<tr>' +
+      '<td><input class="form-control" value="Nouvelle zone"></td>' +
+      '<td><div class="input-group"><input class="form-control cmdSelector" data-subtype="info"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd"><i class="fas fa-list"></i></a></span></div></td>' +
+      '<td><div class="input-group"><input class="form-control cmdSelector" data-subtype="action"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd"><i class="fas fa-list"></i></a></span></div></td>' +
+      '<td><div class="input-group"><input class="form-control cmdSelector" data-subtype="action"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd"><i class="fas fa-list"></i></a></span></div></td>' +
+      '<td><div class="input-group"><input class="form-control cmdSelector" data-subtype="action"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd"><i class="fas fa-list"></i></a></span></div></td>' +
+      '<td><div class="input-group"><input class="form-control cmdSelector" data-subtype="action"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd"><i class="fas fa-list"></i></a></span></div></td>' +
+      '<td><div class="input-group"><input class="form-control cmdSelector" data-subtype="action"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd"><i class="fas fa-list"></i></a></span></div></td>' +
+      '</tr>';
+  }
+
+  $('#bt_addZone').off('click').on('click', function () {
+    $('#tableZones tbody').append(buildZoneRow());
+  });
+
   $('#bt_saveGlobal').off('click').on('click', function () {
     var payload = {};
     $('.configKey').each(function () {

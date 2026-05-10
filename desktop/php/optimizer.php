@@ -58,6 +58,9 @@ $nextActions = config::byKey('next_actions', 'optimizer', '[]');
       </div>
 
       <div role="tabpanel" class="tab-pane" id="opt_zone">
+        <div class="text-right" style="margin-bottom:8px;">
+          <a class="btn btn-primary" id="bt_addZone"><i class="fas fa-plus-circle"></i> {{Ajouter une zone}}</a>
+        </div>
         <table class="table table-condensed" id="tableZones">
           <thead><tr><th>{{Zone}}</th><th>{{Capteur température (Info)}}</th><th>{{Action chauffage}}</th><th>{{Action clim}}</th><th>{{Action volet}}</th><th>{{Action lumière}}</th><th>{{Action ventilation}}</th></tr></thead>
           <tbody>
