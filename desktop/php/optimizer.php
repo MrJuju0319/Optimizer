@@ -15,8 +15,8 @@ $nextActions = config::byKey('next_actions', 'optimizer', '[]');
     <legend><i class="fas fa-brain"></i> {{Optimizer}}</legend>
     <ul class="nav nav-tabs" role="tablist">
       <li role="presentation"><a href="#" id="bt_backPage"><i class="fas fa-arrow-left"></i> {{Retour}}</a></li>
-      <li role="presentation"><a href="#opt_zone" aria-controls="opt_zone" role="tab" data-toggle="tab"><i class="fas fa-map-marked-alt"></i> {{Configuration par zone}}</a></li>
       <li role="presentation" class="active"><a href="#opt_dashboard" aria-controls="opt_dashboard" role="tab" data-toggle="tab"><i class="fas fa-tachometer-alt"></i> {{Dashboard}}</a></li>
+      <li role="presentation"><a href="#opt_zone" aria-controls="opt_zone" role="tab" data-toggle="tab"><i class="fas fa-map-marked-alt"></i> {{Configuration par zone}}</a></li>
       <li role="presentation"><a href="#opt_global" aria-controls="opt_global" role="tab" data-toggle="tab"><i class="fas fa-cogs"></i> {{Configuration globale}}</a></li>
       <li role="presentation"><a href="#opt_rules" aria-controls="opt_rules" role="tab" data-toggle="tab"><i class="fas fa-sliders-h"></i> {{Règles de régulation}}</a></li>
       <li role="presentation"><a href="#opt_learning" aria-controls="opt_learning" role="tab" data-toggle="tab"><i class="fas fa-graduation-cap"></i> {{Apprentissage}}</a></li>
