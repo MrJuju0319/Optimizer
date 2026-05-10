@@ -118,9 +118,10 @@
     var $meta = $row.find('.zoneParamMeta').first();
     if ($meta.length === 0) return;
     var p = paramLine($meta.data('label'), $meta.data('usekey'), $meta.data('cmdkey'), $meta.data('unit'), {});
-    var html = '<tr data-zone-id="' + zoneId + '">' +
+    var extraInfo = p.info.replace('</span></div>', '<a class="btn btn-danger bt_removeParamLine" title="Supprimer cette ligne"><i class="fas fa-minus"></i></a></span></div>');
+    var html = '<tr data-zone-id="' + zoneId + '" class="zone-extra-line">' +
       '<td style="vertical-align:top;">' + p.tracked + '</td>' +
-      '<td style="vertical-align:top;">' + p.info + '</td>' +
+      '<td style="vertical-align:top;">' + extraInfo + '</td>' +
       '<td style="vertical-align:top;">' + p.value + '</td>' +
       '<td style="vertical-align:top;">' + p.unit + '</td>' +
       '</tr>';
@@ -208,6 +209,17 @@
   });
   $('body').off('click', '.bt_addParamLine').on('click', '.bt_addParamLine', function () {
     addSimilarParamLine($(this).closest('tr'));
+  });
+  $('body').off('click', '.bt_removeParamLine').on('click', '.bt_removeParamLine', function () {
+    var $row = $(this).closest('tr');
+    var zoneId = $row.attr('data-zone-id');
+    $row.remove();
+    var $zoneStart = $('#tableZones tbody tr[data-zone-id="' + zoneId + '"].zone-start');
+    var $rowspans = $zoneStart.find('td[rowspan]');
+    $rowspans.each(function () {
+      var current = parseInt($(this).attr('rowspan') || '1', 10);
+      if (current > 1) $(this).attr('rowspan', current - 1);
+    });
   });
   $('#bt_addZone').off('click').on('click', function () { $('#tableZones tbody').append(buildZoneRow()); });
   $('#bt_saveZoneConfig').off('click').on('click', function (e) {
