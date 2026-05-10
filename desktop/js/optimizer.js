@@ -62,7 +62,17 @@
         var key = $(this).data('field');
         zone[key] = $(this).attr('type') === 'checkbox' ? $(this).is(':checked') : $(this).val();
       });
-      if ((zone.name || '').trim() !== '') {
+      var hasName = (zone.name || '').trim() !== '';
+      var hasTextEntry = false;
+      Object.keys(zone).forEach(function (k) {
+        if (k === 'name') return;
+        var v = zone[k];
+        if (typeof v === 'string' && v.trim() !== '') hasTextEntry = true;
+      });
+      if (!hasName && hasTextEntry) {
+        zone.name = 'Nouvelle zone';
+      }
+      if (hasName || hasTextEntry) {
         zones.push(zone);
       }
     });
