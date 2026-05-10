@@ -62,8 +62,8 @@ $nextActions = config::byKey('next_actions', 'optimizer', '[]');
         <div class="text-right" style="margin-bottom:8px;">
           <a class="btn btn-primary" id="bt_addZone"><i class="fas fa-plus-circle"></i> {{Ajouter une zone}}</a>
         </div>
-        <table class="table table-condensed" id="tableZones">
-          <thead><tr><th>{{Zone}}</th><th>{{Données prises en compte | Commande Jeedom | Valeur | Unité}}</th><th>{{Actions}}</th></tr></thead>
+        <table class="table table-condensed" id="tableZones" style="table-layout:fixed;">
+          <thead><tr><th>{{Zone}}</th><th>{{Données prises en compte}}</th><th>{{Actions}}</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
