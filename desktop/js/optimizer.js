@@ -94,17 +94,30 @@
     });
   }
 
+
+  function getExtraUserParameters() {
+    var extra = {};
+    $('.optimizerUserParam').each(function () {
+      var key = $(this).attr('data-key');
+      if (!key) return;
+      extra[key] = $(this).attr('type') === 'checkbox' ? $(this).is(':checked') : $(this).val();
+    });
+    return extra;
+  }
+
   function saveAllConfiguration() {
     var payload = {};
     $('.configKey').each(function () { payload[$(this).attr('data-l1key')] = $(this).val(); });
     payload.zones_config = JSON.stringify(getZonesData());
+    payload.user_parameters = JSON.stringify(getExtraUserParameters());
 
     jeedom.config.save({
       plugin: 'optimizer',
       configuration: payload,
       error: function (error) { $('#div_alert').showAlert({message: error.message, level: 'danger'}); },
       success: function () {
-        $('#div_alert').showAlert({message: 'Configuration globale du plugin sauvegardée', level: 'success'});
+        var zoneCount = getZonesData().length;
+        $('#div_alert').showAlert({message: 'Configuration sauvegardée (' + zoneCount + ' zone(s))', level: 'success'});
         $('#opt_mode').text(payload.global_mode);
         $('#opt_comfort').text(payload.target_comfort + '°C');
       }
@@ -124,7 +137,7 @@
 
   jeedom.config.load({
     plugin: 'optimizer',
-    configuration: ['global_mode', 'target_comfort', 'zones_config'],
+    configuration: ['global_mode', 'target_comfort', 'zones_config', 'user_parameters'],
     success: function (data) {
       if (data.global_mode) $('[data-l1key="global_mode"]').val(data.global_mode);
       if (data.target_comfort) $('[data-l1key="target_comfort"]').val(data.target_comfort);
