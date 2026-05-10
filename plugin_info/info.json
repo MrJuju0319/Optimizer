@@ -1,0 +1,13 @@
+{
+  "id": "optimizer",
+  "name": "Optimizer",
+  "description": "Régulation intelligente multi-zones basée sur les commandes Jeedom existantes",
+  "licence": "MIT",
+  "author": "Optimizer Team",
+  "require": "4.4",
+  "category": "wellness",
+  "hasDependency": 0,
+  "hasOwnDeamon": 0,
+  "language": ["fr_FR"],
+  "compatibility": ["miniplus", "smart", "rpi", "docker", "diy", "v4"]
+}
