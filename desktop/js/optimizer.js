@@ -145,26 +145,39 @@
     return extra;
   }
 
-  function buildPilotageRow(zoneName, pilotage) {
+  function buildPilotageRow(zoneName, pilotage, stateCounts) {
     var p = pilotage || {};
+    var counts = stateCounts || {heating: 1, shutter: 1, light: 1};
+    function cmdBlock(title, field, value) {
+      return '<div style="font-size:11px;font-weight:bold;">' + title + '</div><div class="input-group" style="margin-bottom:4px;"><input class="form-control cmdSelector pilotField" data-field="' + field + '" data-subtype="action" value="' + (value || '') + '"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd" title="Choisir une commande"><i class="fas fa-list"></i></a></span></div>';
+    }
+    var heatingHtml = '';
+    for (var h = 1; h <= Math.max(1, counts.heating); h++) {
+      var hs = counts.heating > 1 ? ' #' + h : '';
+      heatingHtml += cmdBlock('Chauffage ON' + hs, 'heating_on_cmd_' + h, p['heating_on_cmd_' + h]);
+      heatingHtml += cmdBlock('Chauffage OFF' + hs, 'heating_off_cmd_' + h, p['heating_off_cmd_' + h]);
+      heatingHtml += cmdBlock('Consigne chaud' + hs, 'setpoint_hot_cmd_' + h, p['setpoint_hot_cmd_' + h]);
+      heatingHtml += cmdBlock('Consigne froid' + hs, 'setpoint_cold_cmd_' + h, p['setpoint_cold_cmd_' + h]);
+    }
+    var shutterHtml = '';
+    for (var s = 1; s <= Math.max(1, counts.shutter); s++) {
+      var ss = counts.shutter > 1 ? ' #' + s : '';
+      shutterHtml += cmdBlock('Position % (prioritaire)' + ss, 'shutter_position_cmd_' + s, p['shutter_position_cmd_' + s]);
+      shutterHtml += cmdBlock('Ouverture' + ss, 'shutter_open_cmd_' + s, p['shutter_open_cmd_' + s]);
+      shutterHtml += cmdBlock('Fermeture' + ss, 'shutter_close_cmd_' + s, p['shutter_close_cmd_' + s]);
+    }
+    var lightHtml = '';
+    for (var l = 1; l <= Math.max(1, counts.light); l++) {
+      var ls = counts.light > 1 ? ' #' + l : '';
+      lightHtml += cmdBlock('Lumière ON' + ls, 'light_on_cmd_' + l, p['light_on_cmd_' + l]);
+      lightHtml += cmdBlock('Lumière OFF' + ls, 'light_off_cmd_' + l, p['light_off_cmd_' + l]);
+      lightHtml += cmdBlock('Luminosité' + ls, 'light_level_cmd_' + l, p['light_level_cmd_' + l]);
+    }
     return '<tr>' +
       '<td><input class="form-control pilotField" data-field="zone_name" value="' + (zoneName || '') + '" readonly></td>' +
-      '<td>' +
-        '<div style="font-size:11px;font-weight:bold;">Chauffage ON</div><div class="input-group" style="margin-bottom:4px;"><input class="form-control cmdSelector pilotField" data-field="heating_on_cmd" data-subtype="action" value="' + (p.heating_on_cmd || '') + '"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd" title="Choisir une commande"><i class="fas fa-list"></i></a></span></div>' +
-        '<div style="font-size:11px;font-weight:bold;">Chauffage OFF</div><div class="input-group" style="margin-bottom:4px;"><input class="form-control cmdSelector pilotField" data-field="heating_off_cmd" data-subtype="action" value="' + (p.heating_off_cmd || '') + '"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd" title="Choisir une commande"><i class="fas fa-list"></i></a></span></div>' +
-        '<div style="font-size:11px;font-weight:bold;">Consigne chaud</div><div class="input-group" style="margin-bottom:4px;"><input class="form-control cmdSelector pilotField" data-field="setpoint_hot_cmd" data-subtype="action" value="' + (p.setpoint_hot_cmd || '') + '"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd" title="Choisir une commande"><i class="fas fa-list"></i></a></span></div>' +
-        '<div style="font-size:11px;font-weight:bold;">Consigne froid</div><div class="input-group"><input class="form-control cmdSelector pilotField" data-field="setpoint_cold_cmd" data-subtype="action" value="' + (p.setpoint_cold_cmd || '') + '"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd" title="Choisir une commande"><i class="fas fa-list"></i></a></span></div>' +
-      '</td>' +
-      '<td>' +
-        '<div style="font-size:11px;font-weight:bold;">Position % (prioritaire)</div><div class="input-group" style="margin-bottom:4px;"><input class="form-control cmdSelector pilotField" data-field="shutter_position_cmd" data-subtype="action" value="' + (p.shutter_position_cmd || '') + '"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd" title="Choisir une commande"><i class="fas fa-list"></i></a></span></div>' +
-        '<div style="font-size:11px;font-weight:bold;">Ouverture</div><div class="input-group" style="margin-bottom:4px;"><input class="form-control cmdSelector pilotField" data-field="shutter_open_cmd" data-subtype="action" value="' + (p.shutter_open_cmd || '') + '"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd" title="Choisir une commande"><i class="fas fa-list"></i></a></span></div>' +
-        '<div style="font-size:11px;font-weight:bold;">Fermeture</div><div class="input-group"><input class="form-control cmdSelector pilotField" data-field="shutter_close_cmd" data-subtype="action" value="' + (p.shutter_close_cmd || '') + '"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd" title="Choisir une commande"><i class="fas fa-list"></i></a></span></div>' +
-      '</td>' +
-      '<td>' +
-        '<div style="font-size:11px;font-weight:bold;">Lumière ON</div><div class="input-group" style="margin-bottom:4px;"><input class="form-control cmdSelector pilotField" data-field="light_on_cmd" data-subtype="action" value="' + (p.light_on_cmd || '') + '"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd" title="Choisir une commande"><i class="fas fa-list"></i></a></span></div>' +
-        '<div style="font-size:11px;font-weight:bold;">Lumière OFF</div><div class="input-group" style="margin-bottom:4px;"><input class="form-control cmdSelector pilotField" data-field="light_off_cmd" data-subtype="action" value="' + (p.light_off_cmd || '') + '"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd" title="Choisir une commande"><i class="fas fa-list"></i></a></span></div>' +
-        '<div style="font-size:11px;font-weight:bold;">Luminosité</div><div class="input-group"><input class="form-control cmdSelector pilotField" data-field="light_level_cmd" data-subtype="action" value="' + (p.light_level_cmd || '') + '"><span class="input-group-btn"><a class="btn btn-default bt_selectCmd" title="Choisir une commande"><i class="fas fa-list"></i></a></span></div>' +
-      '</td>' +
+      '<td>' + heatingHtml + '</td>' +
+      '<td>' + shutterHtml + '</td>' +
+      '<td>' + lightHtml + '</td>' +
       '</tr>';
   }
 
@@ -183,13 +196,24 @@
   function syncGlobalPilotageRows(pilotageConfig) {
     var byZone = {};
     (pilotageConfig || []).forEach(function (p) { byZone[p.zone_name] = p; });
-    var zoneNames = [];
+    var zoneDescriptors = [];
     $('#tableZones tbody tr.zone-start').each(function () {
-      zoneNames.push(($(this).find('input[data-field=\"name\"]').val() || '').trim() || 'Nouvelle zone');
+      var $zoneRows = $('#tableZones tbody tr[data-zone-id="' + $(this).attr('data-zone-id') + '"]');
+      var counts = {heating: 0, shutter: 0, light: 0};
+      $zoneRows.find('.zoneParamMeta').each(function () {
+        var label = ($(this).data('label') || '').toString();
+        if (label.indexOf('État chauffage') === 0) counts.heating++;
+        if (label.indexOf('État volet') === 0) counts.shutter++;
+        if (label.indexOf('État lumière') === 0) counts.light++;
+      });
+      zoneDescriptors.push({
+        name: (($(this).find('input[data-field=\"name\"]').val() || '').trim() || 'Nouvelle zone'),
+        counts: counts
+      });
     });
     $('#tableGlobalPilotage tbody').empty();
-    zoneNames.forEach(function (zoneName) {
-      $('#tableGlobalPilotage tbody').append(buildPilotageRow(zoneName, byZone[zoneName]));
+    zoneDescriptors.forEach(function (zone) {
+      $('#tableGlobalPilotage tbody').append(buildPilotageRow(zone.name, byZone[zone.name], zone.counts));
     });
   }
 
