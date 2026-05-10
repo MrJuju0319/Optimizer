@@ -47,7 +47,9 @@
 
     return '<tr>' +
       '<td><input class="form-control zoneField" data-field="name" value="' + (z.name || 'Nouvelle zone') + '"></td>' +
-      '<td><div class="zoneParams">' + params + '</div></td>' +
+      '<td><div class="zoneParams">' +
+      '<div class="row" style="font-weight:bold;margin-bottom:6px;"><div class="col-sm-3">Information</div><div class="col-sm-5">Commande Jeedom</div><div class="col-sm-2">Valeur</div><div class="col-sm-2">Unité</div></div>' +
+      params + '</div></td>' +
       '<td><a class="btn btn-danger btn-xs bt_removeZone"><i class="fas fa-trash"></i> Supprimer</a></td>' +
       '</tr>';
   }
