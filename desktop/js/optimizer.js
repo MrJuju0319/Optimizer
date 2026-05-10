@@ -69,37 +69,22 @@
 
 
 
-  function refreshJeedomValues() {
-    $('.cmdSelector').each(function () {
-      var $input = $(this);
-      var human = ($input.val() || '').trim();
-      var $badge = $input.closest('.form-inline').find('.zoneLiveValue');
-      if (!human) {
-        $badge.text('-');
-        return;
+  function refreshOneValue($input) {
+    var human = ($input.val() || "").trim();
+    var $badge = $input.closest(".form-inline").find(".zoneLiveValue");
+    if (!human) { $badge.text("-"); return; }
+    if (!jeedom.cmd || !jeedom.cmd.byHumanName) { $badge.text("N/A"); return; }
+    jeedom.cmd.byHumanName({
+      humanName: human,
+      error: function () { $badge.text("Erreur"); },
+      success: function (cmd) {
+        if (!cmd || !cmd.id) { $badge.text("?"); return; }
+        jeedom.cmd.execute({
+          id: cmd.id, cache: 0,
+          error: function () { $badge.text("Err"); },
+          success: function (value) { $badge.text(value === "" || value === null ? "Vide" : value); }
+        });
       }
-      if (!jeedom.cmd || !jeedom.cmd.byHumanName) {
-        $badge.text('N/A');
-        return;
-      }
-      jeedom.cmd.byHumanName({
-        humanName: human,
-        error: function () { $badge.text('Erreur'); },
-        success: function (cmd) {
-          if (!cmd || !cmd.id) {
-            $badge.text('?');
-            return;
-          }
-          jeedom.cmd.execute({
-            id: cmd.id,
-            cache: 0,
-            error: function () { $badge.text('Err'); },
-            success: function (value) {
-              $badge.text(value === '' || value === null ? 'Vide' : value);
-            }
-          });
-        }
-      });
     });
   }
 
@@ -120,9 +105,13 @@
     });
   }
 
-  $('body').off('click', '.bt_selectCmd').on('click', '.bt_selectCmd', function () { selectCmd($(this).closest('.form-inline, .input-group').find('.cmdSelector').first()); });
+  $('body').off('click', '.bt_selectCmd').on('click', '.bt_selectCmd', function () {
+    selectCmd($(this).closest('.input-group').find('.cmdSelector').first());
+  });
+  $('body').off('click', '.bt_readValue').on('click', '.bt_readValue', function () {
+    refreshOneValue($(this).closest('.input-group').find('.cmdSelector').first());
+  });
   $('#bt_addZone').off('click').on('click', function () { $('#tableZones tbody').append(buildZoneRow()); });
-  $('#bt_refreshJeedomValues').off('click').on('click', function () { refreshJeedomValues(); });
   $('#bt_backPage').off('click').on('click', function () { window.history.back(); });
   $('#bt_saveAll, #bt_saveGlobal').off('click').on('click', function () { saveAllConfiguration(); });
   $('body').off('click', '.bt_removeZone').on('click', '.bt_removeZone', function () { $(this).closest('tr').remove(); });
